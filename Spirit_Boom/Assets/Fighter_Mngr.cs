@@ -9,16 +9,14 @@ public class Fighter_Mngr : MonoBehaviour {
 	public Ability_Mngr
 	m_xAbilityMngr;
 	
-	public int 
-	m_iMenuChoice;
-	
 	public bool 
 	m_bTurn,
 	m_bHasMoved;
 	
 	public GameObject m_xPanel;
-
-	// Use this for initialization
+	
+	public Combat_Text_Mngr m_xCTMngr;
+	
 	void Start () {
 		m_bTurn = Random.Range(0, 2) == 0 ? true : false;
 	}
@@ -44,7 +42,6 @@ public class Fighter_Mngr : MonoBehaviour {
 	public void Fighter_Action(int p_i){
 		if (m_bTurn && p_i < m_xAbilityMngr.m_xaAbilityList.Count && p_i >= 0){
 			m_xFighter0.UseAbility(m_xAbilityMngr.Get_Ability(p_i));
-			print ("AP Left: " + m_xFighter0.m_iAp + " / " + m_xFighter0.m_iMap);
 			m_bHasMoved = true;
 		}
 		else if (m_bTurn && p_i == -1){
@@ -52,46 +49,12 @@ public class Fighter_Mngr : MonoBehaviour {
 		}
 		else if (!m_bTurn && p_i < m_xAbilityMngr.m_xaAbilityList.Count && p_i >= 0){
 			m_xFighter1.UseAbility(m_xAbilityMngr.Get_Ability(p_i));
-			print ("AP Left: " + m_xFighter1.m_iAp + " / " + m_xFighter1.m_iMap);
 			m_bHasMoved = true;
 		}
 		else if (!m_bTurn && p_i == -1){
 			Switch_Turn(true);
 		}
 	}
-	
-	/*public bool Menu_Action (Fighter_Base p_xUser, Fighter_Base p_xTarget){
-		bool _b = false;
-		
-		if (Input.GetKeyDown("w")){
-			m_iMenuChoice++;
-			_b = true;
-		}
-		else if (Input.GetKeyDown("s")){
-			m_iMenuChoice--;
-			_b = true;
-		}
-		
-		if (m_iMenuChoice >= p_xUser.m_xaAbilities.Count){
-			m_iMenuChoice = 0;
-		}
-		
-		if (m_iMenuChoice < 0){
-			m_iMenuChoice = p_xUser.m_xaAbilities.Count - 1;
-		}
-		
-		if (_b){
-			print (m_iMenuChoice + " : " + p_xUser.m_xaAbilities[m_iMenuChoice].m_xName);
-		}
-		
-		if (Input.GetKeyDown("d")){
-			//p_xUser.UseAbility(m_iMenuChoice, p_xTarget);
-			
-			return true;
-		}
-		
-		return false;
-	}*/
 	
 	public void Switch_Turn(bool p_b){
 		if (!p_b){
@@ -111,5 +74,22 @@ public class Fighter_Mngr : MonoBehaviour {
 		
 		m_bTurn = p_b;
 		m_bHasMoved = false;
+	}
+	
+	public int Get_Player_Acc(int p_i){
+		if (p_i < 0 || p_i > m_xAbilityMngr.m_xaAbilityList.Count){
+			p_i = 0;
+		}
+		
+		int _iAcc = m_xFighter0.m_iAcc + m_xFighter0.m_iHit + m_xAbilityMngr.m_xaAbilityList[p_i].m_iHit;
+		
+		if (_iAcc > 100){
+			return 100;
+		}
+		else if (_iAcc < 0){
+			return 0;
+		}
+		
+		return _iAcc;
 	}
 }

@@ -6,6 +6,8 @@ public class Fighter_Enemy : Fighter_Base {
 	
 	public List<int> m_iaAbilities;
 	
+	public int m_iExp;
+	
 	void Start () {
 	
 	}

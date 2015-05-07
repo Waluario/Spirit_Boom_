@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Fighter_Base : MonoBehaviour {
-
+	
 	public string 
 	m_xName;
-
+	
 	public int
 	m_iAp,
 	m_iApr,
@@ -41,17 +41,17 @@ public class Fighter_Base : MonoBehaviour {
 	
 	public void UseAbility(Ability_Base p_xAbility){
 		if (m_iAp < p_xAbility.m_iCost){
-			print ("Not enough AP!");
+			m_xFMngr.m_xCTMngr.Set_Text("Not enough AP!");
 			return;
 		}
 		
-		print(m_xName + " used " + p_xAbility.m_xName);
+		m_xFMngr.m_xCTMngr.Set_Text(m_xName + " used " + p_xAbility.m_xName);
 		p_xAbility.Use(this, m_xTarget);
 		m_iAp -= p_xAbility.m_iCost;
 	}
 	
 	public void TakeDamage(int p_iDmg){
-		print (m_xName + " took " + p_iDmg + " damage!");
+		m_xFMngr.m_xCTMngr.Add_Text(m_xName + " took " + p_iDmg + " damage!");
 		
 		if (p_iDmg > m_iHp){
 			m_iHp = 0;
@@ -94,10 +94,6 @@ public class Fighter_Base : MonoBehaviour {
 		}
 	}
 	
-	/*public void AddAbility(Ability_Base p_xAbility){
-		m_xaAbilities.Add(p_xAbility);
-	}*/
-	
 	public void ApUp(){
 		if (m_iAp + m_iApr > m_iMap){
 			m_iAp = m_iMap;
@@ -107,8 +103,6 @@ public class Fighter_Base : MonoBehaviour {
 		
 		m_iAp += m_iApr;
 	}
-	
-	
 	
 	public void On_Turn_Start(){
 		//m_iHit *= m_bGuard ? 0 : 1;

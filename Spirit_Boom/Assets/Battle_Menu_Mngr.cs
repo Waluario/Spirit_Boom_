@@ -3,12 +3,53 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Battle_Menu_Mngr : MonoBehaviour {
-
+	
+	public Ability_Mngr m_xAmngr;
+	
+	public Fighter_Mngr m_xFmngr;
+	
+	public Fighter_Player m_xPlayer;
+	
+	public GameObject 
+	m_xOriginal,
+	m_xEndturnbutton;
+	
+	public Battle_Menu_Item[] m_xaBattleMenuItems;
+	
+	public float
+	m_fX,
+	m_fYaa,
+	m_fYab,
+	m_fYba,
+	m_fYbb;
+	
 	void Start () {
+		for (int i = 0; i < m_xPlayer.m_iaPlayerAbilities.Count; i++){
+			GameObject _xA = Instantiate(m_xOriginal);
+			_xA.transform.parent = this.transform;
+		}
 		
+		GameObject _xB = Instantiate(m_xEndturnbutton);
+		_xB.transform.parent = this.transform;
+		
+		m_xaBattleMenuItems = GetComponentsInChildren<Battle_Menu_Item>();
+		
+		for (int i = 0; i < m_xaBattleMenuItems.GetLength(0); i++){
+			if (i < m_xPlayer.m_iaPlayerAbilities.Count){
+				m_xaBattleMenuItems[i].m_iAbility = m_xPlayer.m_iaPlayerAbilities[i];
+			}
+				
+			m_xaBattleMenuItems[i].transform.localPosition = new Vector3(m_fX, m_fYaa + i * m_fYab, 0);
+			m_xaBattleMenuItems[i].m_xPanel.transform.localPosition = new Vector3(m_xaBattleMenuItems[i].m_xPanel.transform.localPosition.x, m_fYba + m_fYbb * i, 0);
+			m_xaBattleMenuItems[i].m_xDesc.transform.localPosition = new Vector3(m_xaBattleMenuItems[i].m_xDesc.transform.localPosition.x, m_fYba + m_fYbb * i, 0);
+		}
 	}
-
+	
 	void Update () {
-		
+		/*for (int i = 0; i < m_xaBattleMenuItems.GetLength(0); i++){
+			m_xaBattleMenuItems[i].transform.localPosition = new Vector3(m_fX, m_fYaa + i * m_fYab, 0);
+			m_xaBattleMenuItems[i].m_xPanel.transform.localPosition = new Vector3(m_xaBattleMenuItems[i].m_xPanel.transform.position.x, m_fYba, 0);
+			m_xaBattleMenuItems[i].m_xDesc.transform.localPosition = new Vector3(m_xaBattleMenuItems[i].m_xDesc.transform.position.x, m_fYbb, 0);
+		}*/
 	}
 }

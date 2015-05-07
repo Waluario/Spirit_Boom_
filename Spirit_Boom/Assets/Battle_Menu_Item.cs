@@ -11,21 +11,36 @@ public class Battle_Menu_Item : MonoBehaviour {
 	
 	public Fighter_Mngr m_xFightMngr;
 	
+	public Ability_Mngr m_xAbilityMngr;
+	
+	public Battle_Menu_Mngr m_xBMMngr;
+	
 	public int m_iAbility;
-
+	
+	public GameObject m_xPanel;
+	
+	public bool m_bOnlyonce;
+	
 	void Start () {
-		
+		m_bOnlyonce = false;
 	}
 	
 	void Update () {
-		m_xName.text = m_xFightMngr.m_xAbilityMngr.Get_Ability(m_iAbility).m_xName;
+		if (!m_bOnlyonce){
+			m_xBMMngr = GetComponentInParent<Battle_Menu_Mngr>();
+			m_xFightMngr = m_xBMMngr.m_xFmngr;
+			m_xAbilityMngr = m_xBMMngr.m_xAmngr;
+			
+			m_xName.text = m_xAbilityMngr.Get_Ability(m_iAbility).m_xName;
+			
+			m_bOnlyonce = true;
+		}
 		
-		m_xDesc.text = m_xFightMngr.m_xAbilityMngr.Get_Ability(m_iAbility).m_xDesc + 
-			"\n Element: " + GetElement(m_xFightMngr.m_xAbilityMngr.Get_Ability(m_iAbility).m_eEl) + 
-				"\n Power: " + m_xFightMngr.m_xAbilityMngr.Get_Ability(m_iAbility).m_iPow + 
-				"\n Accuracy: " + m_xFightMngr.m_xAbilityMngr.Get_Ability(m_iAbility).m_iHit + "%" + 
-				"\n Cost: " + m_xFightMngr.m_xAbilityMngr.Get_Ability(m_iAbility).m_iCost;
-				
+		m_xDesc.text = m_xAbilityMngr.Get_Ability(m_iAbility).m_xDesc + 
+			"\n Element: " + GetElement(m_xAbilityMngr.Get_Ability(m_iAbility).m_eEl) + 
+				"\n Power: " + m_xAbilityMngr.Get_Ability(m_iAbility).m_iPow + 
+				"\n Accuracy: " + m_xFightMngr.Get_Player_Acc(m_iAbility) + "%" + 
+				"\n Cost: " + m_xAbilityMngr.Get_Ability(m_iAbility).m_iCost;
 	}
 	
 	public void Use_Ability(){

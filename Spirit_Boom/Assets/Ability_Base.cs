@@ -16,6 +16,7 @@ public enum e_Element{
 };
 
 public class Ability_Base : MonoBehaviour {
+	
 	public string 
 	m_xName,
 	m_xDesc;
@@ -29,6 +30,8 @@ public class Ability_Base : MonoBehaviour {
 	
 	public Ability_Effect m_xEffect;
 	
+	public Ability_Mngr m_xAbilityMngr;
+	
 	public Ability_Base(string p_xName, int p_iPow, int p_iHit, int p_iCost, e_Element p_eE){
 		m_xName = p_xName;
 		
@@ -37,13 +40,15 @@ public class Ability_Base : MonoBehaviour {
 		m_iCost = p_iCost;
 		
 		m_eEl = p_eE;
+		
+		m_xAbilityMngr = GetComponentInParent<Ability_Mngr>();
 	}
 	
 	public void Use(Fighter_Base p_xUser, Fighter_Base p_xTarget){
 		int _iA = Random.Range(0, 100) + m_iHit + p_xUser.m_iAcc + p_xUser.m_iHit;
 		
 		if (_iA < p_xTarget.m_iEvd){
-			print ("The attack missed...");
+			m_xAbilityMngr.m_xCTMngr.Add_Text("The attack missed...");
 			p_xUser.m_iHit = 0;
 			
 			return;
