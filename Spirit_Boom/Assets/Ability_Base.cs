@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Rendering;
 
 public class Ability_Effect : MonoBehaviour {
 	public int
@@ -16,7 +17,9 @@ public enum e_Element{
 };
 
 public class Ability_Base : MonoBehaviour {
-	
+
+	public ParticleSystem HitEffect;
+
 	public string 
 	m_xName,
 	m_xDesc;
@@ -47,9 +50,14 @@ public class Ability_Base : MonoBehaviour {
 	public void Use(Fighter_Base p_xUser, Fighter_Base p_xTarget){
 		int _iA = Random.Range(0, 100) + m_iHit + p_xUser.m_iAcc + p_xUser.m_iHit;
 		
+
+		/*HitEffect.loop = false;
+		HitEffect.Play ();*/
+
 		if (_iA < p_xTarget.m_iEvd){
 			m_xAbilityMngr.m_xCTMngr.Add_Text("The attack missed...");
 			p_xUser.m_iHit = 0;
+
 			
 			return;
 		}
