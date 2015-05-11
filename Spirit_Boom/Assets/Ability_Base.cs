@@ -17,9 +17,7 @@ public enum e_Element{
 };
 
 public class Ability_Base : MonoBehaviour {
-
-	public ParticleSystem HitEffect;
-
+	
 	public string 
 	m_xName,
 	m_xDesc;
@@ -27,7 +25,8 @@ public class Ability_Base : MonoBehaviour {
 	public int
 	m_iPow,
 	m_iHit,
-	m_iCost;
+	m_iCost,
+	m_iEff;
 	
 	public e_Element m_eEl;
 	
@@ -50,17 +49,14 @@ public class Ability_Base : MonoBehaviour {
 	public void Use(Fighter_Base p_xUser, Fighter_Base p_xTarget){
 		int _iA = Random.Range(0, 100) + m_iHit + p_xUser.m_iAcc + p_xUser.m_iHit;
 		
-
-		/*HitEffect.loop = false;
-		HitEffect.Play ();*/
-
 		if (_iA < p_xTarget.m_iEvd){
 			m_xAbilityMngr.m_xCTMngr.Add_Text("The attack missed...");
 			p_xUser.m_iHit = 0;
-
 			
 			return;
 		}
+		
+		m_xAbilityMngr.m_xAEMngr.Play_Effect(m_iEff, 0);
 		
 		p_xUser.m_iHit += 5;
 		p_xTarget.TakeDamage((DmgCalculation(p_xUser.GetPow(m_eEl, m_iPow), p_xTarget.GetDef(m_eEl))));
